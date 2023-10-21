@@ -12,6 +12,7 @@ class CustomerData
     public $email;
     public $telefone;
     public $data_nascimento;
+    public $id;
 
     public function __construct(
         ?string $nome,
@@ -21,7 +22,8 @@ class CustomerData
         ?string $cep,
         ?string $email,
         ?string $telefone,
-        ?string $data_nascimento
+        ?string $data_nascimento,
+        ?int $id
     )
     {
         $this->nome = $nome;
@@ -31,11 +33,15 @@ class CustomerData
         $this->cep = $cep;
         $this->email = $email;
         $this->telefone = $telefone;
-        $this->data_nascimento = \DateTime::createFromFormat('d/m/Y',$data_nascimento)->format('Y-m-d');
+        if ($data_nascimento) {
+            $this->data_nascimento = \DateTime::createFromFormat('d/m/Y',$data_nascimento)->format('Y-m-d');
+        }
+        $this->id = $id;
     }
 
     public function toArray() : array
     {
-        return (array) $this;
+        $data = (array) $this;
+        return array_filter($data);
     }
 }

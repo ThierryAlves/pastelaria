@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateCostumerRequest extends FormRequest
+class CreateCustomerRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +23,7 @@ class CreateCostumerRequest extends FormRequest
     {
         return [
             'nome' => 'required|min:8|max:80',
-            'email' => 'required|email|unique:App\Models\Costumer,email',
+            'email' => 'required|email|unique:App\Models\Customer,email',
             'telefone' => 'required|min:8|max:11',
             'data_nascimento' => 'required|date_format:d/m/Y',
             'endereco' => 'required|min:10|max:100',
@@ -46,13 +46,5 @@ class CreateCostumerRequest extends FormRequest
 
         $this->replace($input);
     }
-
-    public function messages(): array
-    {
-        return [
-
-        ];
-    }
-
 
 }

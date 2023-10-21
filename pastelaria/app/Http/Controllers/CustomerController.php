@@ -3,23 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\DataTransferObjects\CustomerData;
-use App\Http\Requests\CreateCostumerRequest;
-use App\Http\Service\CostumerService;
+use App\Http\Requests\CreateCustomerRequest;
+use App\Http\Requests\UpdateCustomerRequest;
+use App\Http\Service\CustomerService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class CostumerController extends Controller
+class CustomerController extends Controller
 {
-    private $costumerService;
+    private $customerService;
 
-    public function __construct(CostumerService $costumerService)
+    public function __construct(CustomerService $customerService)
     {
-        $this->costumerService = $costumerService;
+        $this->customerService = $customerService;
     }
 
-    public function create(CreateCostumerRequest $request)
+    public function create(CreateCustomerRequest $request)
     {
-        $costumer = new CustomerData(
+        $customer = new CustomerData(
             $request->input('nome'),
             $request->input('endereco'),
             $request->input('complemento'),
@@ -27,39 +28,53 @@ class CostumerController extends Controller
             $request->input('cep'),
             $request->input('email'),
             $request->input('telefone'),
-            $request->input('data_nascimento')
+            $request->input('data_nascimento'),
+            null
         );
 
-        $createdCostumer = $this->costumerService->addCostumer($costumer);
+        $createdCustomer = $this->customerService->add($customer);
 
-        return response($createdCostumer);
+        return response($createdCustomer);
     }
 
     public function get(int $id)
     {
-        $costumer = $this->costumerService->getById($id);
+        $customer = $this->customerService->getById($id);
 
-        return response($costumer);
+        return response($customer);
     }
 
     public function list()
     {
-        $costumers =  $this->costumerService->list();
+        $customers =  $this->customerService->list();
 
-        return response($costumers);
+        return response($customers);
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateCustomerRequest $request, $id)
     {
-        var_dump($request->all());
-        var_dump($id);
-        die;
+        $customer = new CustomerData(
+            $request->input('nome'),
+            $request->input('endereco'),
+            $request->input('complemento'),
+            $request->input('bairro'),
+            $request->input('cep'),
+            $request->input('email'),
+            $request->input('telefone'),
+            $request->input('data_nascimento'),
+            $id
+        );
+
+        $updatedCustomer =  $this->customerService->update($customer);
+
+        return response($updatedCustomer);
     }
 
     public function delete(int $id)
     {
-        $this->costumerService->delete($id);
+        $this->customerService->delete($id);
 
         return response(['message' => 'cliente excluido']);
     }
+
 }
