@@ -2,33 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\DataTransferObjects\ProductData;
 use App\Http\Requests\CreateProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Service\ProductService;
-use Illuminate\Http\Request;
+use App\Models\Product;
 
 class ProductController extends Controller
 {
-    private $productService;
-    private $productData;
+    private ProductService $productService;
 
-    public function __construct(ProductService $productService, ProductData $productData)
+    public function __construct(ProductService $productService)
     {
         $this->productService = $productService;
-        $this->productData = $productData;
     }
 
     public function create(CreateProductRequest $request)
     {
-        $product = $this->productData->fromRequest($request);
-        $createdProduct = $this->productService->add($product);
+        $createdProduct = $this->productService->add($request->validated());
         return response($createdProduct);
     }
 
-    public function get(int $id)
+    public function get(Product $product)
     {
-        $product = $this->productService->getById($id);
         return response($product);
     }
 
@@ -38,16 +33,15 @@ class ProductController extends Controller
         return response($products);
     }
 
-    public function update(UpdateProductRequest $request)
+    public function update(UpdateProductRequest $request, Product $product)
     {
-        $product = $this->productData->fromRequest($request);
-        $updatedProduct =  $this->productService->update($product);
+        $updatedProduct =  $this->productService->update($product, $request->validated());
         return response($updatedProduct);
     }
 
-    public function delete(int $id)
+    public function delete(Product $product)
     {
-        $this->productService->delete($id);
+        $this->productService->delete($product);
         return response(['message' => 'produto excluido']);
     }
 }

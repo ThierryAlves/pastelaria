@@ -2,51 +2,46 @@
 
 namespace App\Http\Controllers;
 
-use App\DataTransferObjects\CustomerData;
 use App\Http\Requests\CreateCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
 use App\Http\Service\CustomerService;
+use App\Models\Customer;
 
 class CustomerController extends Controller
 {
-    private $customerService;
-    private $customerData;
+    private CustomerService $customerService;
 
-    public function __construct(CustomerService $customerService, CustomerData $customerData)
+    public function __construct(CustomerService $customerService)
     {
         $this->customerService = $customerService;
-        $this->customerData = $customerData;
     }
 
     public function create(CreateCustomerRequest $request)
     {
-        $customer = $this->customerData->fromRequest($request);
-        $createdCustomer = $this->customerService->add($customer);
+        $createdCustomer = $this->customerService->add($request->validated());
         return response($createdCustomer);
     }
 
-    public function get(int $id)
+    public function get(Customer $customer)
     {
-        $customer = $this->customerService->getById($id);
         return response($customer);
     }
 
     public function list()
     {
-        $customers =  $this->customerService->list();
+        $customers = $this->customerService->list();
         return response($customers);
     }
 
-    public function update(UpdateCustomerRequest $request)
+    public function update(UpdateCustomerRequest $request, Customer $customer)
     {
-        $customer = $this->customerData->fromRequest($request);
-        $updatedCustomer =  $this->customerService->update($customer);
+        $updatedCustomer = $this->customerService->update($customer, $request->validated());
         return response($updatedCustomer);
     }
 
-    public function delete(int $id)
+    public function delete(Customer $customer)
     {
-        $this->customerService->delete($id);
+        $this->customerService->delete($customer);
         return response(['message' => 'cliente excluido']);
     }
 

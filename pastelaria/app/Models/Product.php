@@ -19,7 +19,7 @@ class Product extends Model
     protected function fotoProduto(): Attribute
     {
         return Attribute::make(
-            get: fn (string $value) => asset("produtos/$value"),
+            get: fn (string $value) => asset("produtos/$value")
         );
     }
 }

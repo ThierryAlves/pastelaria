@@ -2,11 +2,7 @@
 
 namespace App\Http\Service;
 
-use App\DataTransferObjects\productData;
 use App\Models\Product;
-use Illuminate\Http\UploadedFile;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
 class ProductService
 {
     private $productModel;
@@ -18,13 +14,14 @@ class ProductService
         $this->productImageService = $productImageService;
     }
 
-    public function add(ProductData $productData) : Product
+    public function add(array $productData) : Product
     {
-        $productCreated = $this->productModel->create(
-            $productData->toArray()
-        );
+        $productImage = $productData['foto_produto'];
+        $fileName = $productImage->getFilename() . '.' . $productImage->extension();
+        $productData['foto_produto'] = $fileName;
+        $productCreated = $this->productModel->create($productData);
 
-        $this->productImageService->storeProductImage($productData->foto_produto);
+        $this->productImageService->storeProductImage($productImage);
 
         return $productCreated;
     }
@@ -39,23 +36,23 @@ class ProductService
         return $this->productModel->simplePaginate(15);
     }
 
-    public function update(ProductData $product) : Product
+    public function update(Product $product, array $changedData) : Product
     {
-        $productFound = $this->getById($product->id);
 
-        if ($product->foto_produto) {
-            $oldFileName = $productFound->getRawOriginal('foto_produto');
-            $this->productImageService->updateProductImage($product->foto_produto, $oldFileName);
+        if ($changedData['foto_produto']) {
+            $oldFileName = $product->getRawOriginal('foto_produto');
+            $this->productImageService->updateProductImage($changedData['foto_produto'], $oldFileName);
+            $changedData['foto_produto'] = $changedData['foto_produto']->getFilename() . '.' . $changedData['foto_produto']->extension();
         }
 
-        $productFound->update($product->toArray());
+        $newProductData = array_merge($product->toArray(), $changedData);
+        $product->update($newProductData);
 
-        return $productFound;
+        return $product;
     }
 
-    public function delete(int $id) : void
+    public function delete(Product $product) : void
     {
-        $product = $this->getById($id);
         $product->delete();
     }
 }

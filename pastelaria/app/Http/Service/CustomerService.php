@@ -2,9 +2,7 @@
 
 namespace App\Http\Service;
 
-use App\DataTransferObjects\CustomerData;
 use App\Models\Customer;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CustomerService
 {
@@ -15,11 +13,9 @@ class CustomerService
         $this->customerModel = $customer;
     }
 
-    public function add(CustomerData $customer) : Customer
+    public function add(array $customerData) : Customer
     {
-        return $this->customerModel->create(
-            $customer->toArray()
-        );
+        return $this->customerModel->create($customerData);
     }
 
     public function getById(int $id) : Customer
@@ -27,22 +23,21 @@ class CustomerService
         return $this->customerModel->findOrFail($id);
     }
 
-    public function list()
+    public function list() : Customer
     {
         return $this->customerModel->simplePaginate(15);
     }
 
-    public function update(CustomerData $customer) : Customer
+    public function update(Customer $customer, array $changedData) : Customer
     {
-        $customerFound = $this->getById($customer->id);
-        $customerFound->update($customer->toArray());
+        $newCustomerData = array_merge($customer->toArray(), $changedData);
+        $customer->update($newCustomerData);
 
-        return $customerFound;
+        return $customer;
     }
 
-    public function delete(int $id) : void
+    public function delete(Customer $customer) : void
     {
-        $customer = $this->getById($id);
         $customer->delete();
     }
 }
