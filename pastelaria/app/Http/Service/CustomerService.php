@@ -24,13 +24,7 @@ class CustomerService
 
     public function getById(int $id) : Customer
     {
-        $customer =  $this->customerModel->find($id);
-
-        if (! $customer) {
-            throw new NotFoundHttpException('Cliente não encontrado');
-        }
-
-        return $customer;
+        return $this->customerModel->findOrFail($id);
     }
 
     public function list()
