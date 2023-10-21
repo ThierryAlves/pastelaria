@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,6 +18,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('api')->group(function() {
     Route::controller(CustomerController::class)->prefix('/customer')->group(function() {
+        Route::post('/create', 'create');
+        Route::get('/get/{id}', 'get');
+        Route::patch('/update/{id}', 'update');
+        Route::delete('/delete/{id}', 'delete');
+        Route::get('/list/', 'list');
+    });
+
+    Route::controller(ProductController::class)->prefix('/product')->group(function() {
         Route::post('/create', 'create');
         Route::get('/get/{id}', 'get');
         Route::patch('/update/{id}', 'update');
