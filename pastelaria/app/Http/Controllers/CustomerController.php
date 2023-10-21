@@ -49,6 +49,13 @@ class CostumerController extends Controller
         return response($costumers);
     }
 
+    public function update(Request $request, $id)
+    {
+        var_dump($request->all());
+        var_dump($id);
+        die;
+    }
+
     public function delete(int $id)
     {
         $this->costumerService->delete($id);
