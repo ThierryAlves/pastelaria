@@ -1,42 +1,35 @@
 <?php
 
 namespace App\DataTransferObjects;
+use Illuminate\Http\Request;
 
 class CustomerData
 {
-    public $nome;
-    public $endereco;
-    public $complemento;
-    public $bairro;
-    public $cep;
-    public $email;
-    public $telefone;
-    public $data_nascimento;
-    public $id;
+    public readonly ?string $nome;
+    public readonly ?string $endereco;
+    public readonly ?string $complemento;
+    public readonly ?string $bairro;
+    public readonly ?string $cep;
+    public readonly ?string $email;
+    public readonly ?string $telefone;
+    public readonly ?string $data_nascimento;
+    public readonly ?int $id;
 
-    public function __construct(
-        ?string $nome,
-        ?string $endereco,
-        ?string $complemento,
-        ?string $bairro,
-        ?string $cep,
-        ?string $email,
-        ?string $telefone,
-        ?string $data_nascimento,
-        ?int $id
-    )
+    public function fromRequest(Request $request) : Customerdata
     {
-        $this->nome = $nome;
-        $this->endereco = $endereco;
-        $this->complemento = $complemento;
-        $this->bairro = $bairro;
-        $this->cep = $cep;
-        $this->email = $email;
-        $this->telefone = $telefone;
-        if ($data_nascimento) {
-            $this->data_nascimento = \DateTime::createFromFormat('d/m/Y',$data_nascimento)->format('Y-m-d');
+        $this->nome = $request->input('nome');
+        $this->endereco = $request->input('endereco');
+        $this->complemento = $request->input('complemento');
+        $this->bairro = $request->input('bairro');
+        $this->cep = $request->input('cep');
+        $this->email = $request->input('email');
+        $this->telefone = $request->input('telefone');
+        if ($request->input('data_nascimento')) {
+            $this->data_nascimento = \DateTime::createFromFormat('d/m/Y',$request->input('data_nascimento'))->format('Y-m-d');
         }
-        $this->id = $id;
+        $this->id = $request->route('id');
+
+        return $this;
     }
 
     public function toArray() : array

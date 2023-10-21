@@ -8,17 +8,23 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CustomerService
 {
+    private $customerModel;
+
+    public function __construct(Customer $customer)
+    {
+        $this->customerModel = $customer;
+    }
 
     public function add(CustomerData $customer) : Customer
     {
-        return Customer::create(
+        return $this->customerModel->create(
             $customer->toArray()
         );
     }
 
     public function getById(int $id) : Customer
     {
-        $customer =  Customer::find($id);
+        $customer =  $this->customerModel->find($id);
 
         if (! $customer) {
             throw new NotFoundHttpException('Cliente não encontrado');
@@ -29,7 +35,7 @@ class CustomerService
 
     public function list()
     {
-        return Customer::simplePaginate(1);
+        return $this->customerModel->simplePaginate(15);
     }
 
     public function update(CustomerData $customer) : Customer
