@@ -29,7 +29,7 @@ class Order extends Model
 
     public function items() : HasMany
     {
-        return $this->hasMany(ItensOrder::class, 'pedido_id');
+        return $this->hasMany(ItemsOrder::class, 'pedido_id');
     }
 
     public function customer() : BelongsTo

@@ -5,41 +5,36 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Http\Service\OrderService;
+use Illuminate\Http\Response;
 
 class OrderController extends Controller
 {
-    private $orderService;
+    private OrderService $orderService;
 
     public function __construct(OrderService $orderService)
     {
         $this->orderService = $orderService;
     }
 
-    public function create(CreateOrderRequest $request)
+    public function create(CreateOrderRequest $request) : Response
     {
         $createdOrder = $this->orderService->add($request->validated());
         return response($createdOrder);
     }
 
-    public function get(int $id)
+    public function get(int $id) : Response
     {
         $order = $this->orderService->getById($id);
         return response($order);
     }
 
-    public function list()
+    public function list() : Response
     {
         $orders =  $this->orderService->list();
         return response($orders);
     }
 
-    public function changeProducts(UpdateOrderRequest $request)
-    {
-        $updatedOrder =  $this->orderService->changeProducts($order);
-        return response($updatedOrder);
-    }
-
-    public function delete(int $id)
+    public function delete(int $id) : Response
     {
         $this->orderService->delete($id);
         return response(['message' => 'pedido excluido']);

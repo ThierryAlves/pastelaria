@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ItensOrder extends Model
+class ItemsOrder extends Model
 {
     use HasFactory;
     use softDeletes;

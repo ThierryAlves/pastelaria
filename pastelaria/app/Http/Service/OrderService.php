@@ -3,20 +3,20 @@
 namespace App\Http\Service;
 
 use App\Mail\OrderCreated;
-use App\Models\ItensOrder;
+use App\Models\ItemsOrder;
 use App\Models\Order;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Mail;
 
 class OrderService
 {
-    private $orderModel;
-    private $itensOrderModel;
+    private Order $orderModel;
+    private ItemsOrder $itemsOrderModel;
 
-    public function __construct(Order $order, ItensOrder $itensOrder)
+    public function __construct(Order $order, ItemsOrder $itemsOrder)
     {
         $this->orderModel = $order;
-        $this->itensOrderModel = $itensOrder;
+        $this->itemsOrderModel = $itemsOrder;
     }
 
     public function add(array $orderData) : Order
@@ -26,7 +26,7 @@ class OrderService
         ]);
 
         foreach ($orderData['produtos'] as $product) {
-            $this->itensOrderModel->create([
+            $this->itemsOrderModel->create([
                 'pedido_id' => $orderCreated->id,
                 'produto_id' => $product
             ]);
@@ -54,11 +54,6 @@ class OrderService
             ->with('items')
             ->with('items.product')
             ->simplePaginate(1);
-    }
-
-    public function changeProducts(Order $order) : Order
-    {
-        $this->itensOrderModel->where('pedido_id', $order->id)->delete();
     }
 
     public function delete(int $id) : void
