@@ -39,9 +39,7 @@ Route::middleware('api')->group(function() {
         Route::get('/get/{id}', 'get');
         Route::delete('/delete/{id}', 'delete');
         Route::get('/list/', 'list');
-        Route::prefix('/update/{id}')->group(function () {
-            Route::put('/changeProducts', 'changeProducts');
-        });
+        Route::put('/changeProducts/{order}/', 'changeProducts');
     });
 });
 

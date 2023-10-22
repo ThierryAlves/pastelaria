@@ -15,6 +15,7 @@ class OrderRequest extends FormRequest
     {
         return [
             'cliente' => ['exists:App\Models\Customer,id'],
+            'produtos' => ['required','array'],
             'produtos.*' => ['exists:App\Models\Product,id']
         ];
     }

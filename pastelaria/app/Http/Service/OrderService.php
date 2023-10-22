@@ -34,7 +34,7 @@ class OrderService
 
         $order = $this->getById($orderCreated->id);
 
-        Mail::to("thierryalves.oliveira21@gmail.com")->send(new OrderCreated($order));
+        Mail::to($order->customer->email)->send(new OrderCreated($order));
 
         return $order;
     }
@@ -60,5 +60,23 @@ class OrderService
     {
         $order = $this->getById($id);
         $order->delete();
+    }
+
+    public function changeProducts(array $orderData, Order $order)
+    {
+        $this->itemsOrderModel->where('pedido_id', $order->id)->delete();
+
+        foreach ($orderData['produtos'] as $productId) {
+            $this->itemsOrderModel->create([
+                'pedido_id' => $order->id,
+                'produto_id' => $productId
+            ]);
+        }
+
+        $order = $this->getById($order->id);
+
+        Mail::to($order->customer->email)->send(new OrderCreated($order));
+
+        return $order;
     }
 }

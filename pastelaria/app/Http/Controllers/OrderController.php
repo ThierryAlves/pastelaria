@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Http\Service\OrderService;
+use App\Models\Order;
 use Illuminate\Http\Response;
 
 class OrderController extends Controller
@@ -38,5 +39,11 @@ class OrderController extends Controller
     {
         $this->orderService->delete($id);
         return response(['message' => 'pedido excluido']);
+    }
+
+    public function changeProducts(UpdateOrderRequest $request, Order $order)
+    {
+        $order = $this->orderService->changeProducts($request->validated(), $order);
+        return response($order);
     }
 }

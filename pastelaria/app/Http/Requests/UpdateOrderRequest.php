@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateOrderRequest extends OrderRequest
 {
@@ -11,7 +10,7 @@ class UpdateOrderRequest extends OrderRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,6 +21,7 @@ class UpdateOrderRequest extends OrderRequest
     public function rules(): array
     {
         return array_merge_recursive(parent::rules(), [
+            'cliente_id' => ['required'],
             'produtos.*' => ['required']
         ]);
     }
