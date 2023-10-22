@@ -2,9 +2,11 @@
 
 namespace App\Http\Service;
 
+use App\Mail\OrderCreated;
 use App\Models\ItensOrder;
 use App\Models\Order;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Mail;
 
 class OrderService
 {
@@ -30,7 +32,11 @@ class OrderService
             ]);
         }
 
-        return $this->getById($orderCreated->id);
+        $order = $this->getById($orderCreated->id);
+
+        Mail::to("thierryalves.oliveira21@gmail.com")->send(new OrderCreated($order));
+
+        return $order;
     }
 
     public function getById(int $id) : Order
@@ -38,6 +44,7 @@ class OrderService
         return $this->orderModel
             ->with('items')
             ->with('items.product')
+            ->with('customer')
             ->findOrFail($id);
     }
 
