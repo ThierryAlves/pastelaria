@@ -25,4 +25,11 @@ class ProductImageService
         $this->storeProductImage($file);
         $this->deleteProductImage($oldFileName);
     }
+
+    public function getFileName()
+    {
+
+
+        return $filename;
+    }
 }

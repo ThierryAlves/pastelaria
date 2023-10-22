@@ -38,14 +38,17 @@ class ProductService
 
     public function update(Product $product, array $changedData) : Product
     {
+        $fileName = $product->getRawOriginal('foto_produto');
 
-        if ($changedData['foto_produto']) {
+        if (isset($changedData['foto_produto'])) {
             $oldFileName = $product->getRawOriginal('foto_produto');
             $this->productImageService->updateProductImage($changedData['foto_produto'], $oldFileName);
-            $changedData['foto_produto'] = $changedData['foto_produto']->getFilename() . '.' . $changedData['foto_produto']->extension();
+            $fileName = $changedData['foto_produto']->getFilename() . '.' . $changedData['foto_produto']->extension();
         }
 
-        $newProductData = array_merge($product->toArray(), $changedData);
+        $newProductData = array_merge($product->attributesToArray(), $changedData);
+        $newProductData['foto_produto'] = $fileName;
+
         $product->update($newProductData);
 
         return $product;
