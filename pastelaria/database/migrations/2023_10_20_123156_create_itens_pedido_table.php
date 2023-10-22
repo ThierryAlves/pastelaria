@@ -20,6 +20,7 @@ return new class extends Migration
                 table: 'produtos', indexName: 'itens_pedido_produto_id'
             );
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

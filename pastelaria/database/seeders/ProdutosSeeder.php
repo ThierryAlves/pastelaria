@@ -21,20 +21,6 @@ class ProdutosSeeder extends Seeder
                 'created_at' => Carbon::now()->subDays(rand(1, 30)),
                 'updated_at' => Carbon::now()->addDays(rand(1, 30)),
             ],
-            [
-                'nome' => 'Pastel de frango',
-                'preco' => 6.00,
-                'path_foto' => 'pastel.jpg',
-                'created_at' => Carbon::now()->subDays(rand(1, 30)),
-                'updated_at' => Carbon::now()->addDays(rand(1, 30)),
-            ],
-            [
-                'nome' => 'Pastel especial de frango',
-                'preco' => 20.00,
-                'path_foto' => 'pastel.jpg',
-                'created_at' => Carbon::now()->subDays(rand(1, 30)),
-                'updated_at' => Carbon::now()->addDays(rand(1, 30)),
-            ]
         ];
 
         DB::table('produtos')->insert($insert);

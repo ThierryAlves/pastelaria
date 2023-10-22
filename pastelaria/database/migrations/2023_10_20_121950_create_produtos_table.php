@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('produtos', function (Blueprint $table) {
             $table->id();
-            $table->string('nome', 80);
+            $table->string('nome', 50);
             $table->double('preco');
-            $table->string('path_foto');
+            $table->string('foto_produto', 20);
             $table->timestamps();
             $table->softDeletes();
         });
