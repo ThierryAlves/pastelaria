@@ -3,10 +3,12 @@
 namespace App\Http\Service;
 
 use App\Models\Product;
+use Illuminate\Pagination\Paginator;
+
 class ProductService
 {
-    private $productModel;
-    private $productImageService;
+    private Product $productModel;
+    private ProductImageService $productImageService;
 
     public function __construct(Product $product, ProductImageService $productImageService)
     {
@@ -26,12 +28,7 @@ class ProductService
         return $productCreated;
     }
 
-    public function getById(int $id) : Product
-    {
-        return $this->productModel->findOrFail($id);
-    }
-
-    public function list()
+    public function list() : Paginator
     {
         return $this->productModel->simplePaginate(15);
     }
