@@ -41,7 +41,7 @@ class OrderController extends Controller
         return response(['message' => 'pedido excluido']);
     }
 
-    public function changeProducts(UpdateOrderRequest $request, Order $order)
+    public function changeProducts(UpdateOrderRequest $request, Order $order) : Response
     {
         $order = $this->orderService->changeProducts($request->validated(), $order);
         return response($order);

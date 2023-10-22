@@ -62,7 +62,7 @@ class OrderService
         $order->delete();
     }
 
-    public function changeProducts(array $orderData, Order $order)
+    public function changeProducts(array $orderData, Order $order) : Order
     {
         $this->itemsOrderModel->where('pedido_id', $order->id)->delete();
 
