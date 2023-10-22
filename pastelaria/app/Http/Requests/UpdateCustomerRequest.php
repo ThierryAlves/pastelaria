@@ -19,7 +19,7 @@ class UpdateCustomerRequest extends CustomerRequest
     {
         return array_merge_recursive(parent::rules(), [
             'nome' => ['sometimes'],
-            'email' => ['sometimes', "unique:App\Models\Customer,{$this->id}"],
+            'email' => ['sometimes', "unique:App\Models\Customer,email"],
             'telefone' => ['sometimes'],
             'data_nascimento' => ['sometimes'],
             'endereco' => ['sometimes'],

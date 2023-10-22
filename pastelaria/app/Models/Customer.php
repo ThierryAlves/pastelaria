@@ -20,8 +20,8 @@ class Customer extends Model
     protected function dataNascimento(): Attribute
     {
         return Attribute::make(
-            set: fn (string $value) => DateTime::createFromFormat('d/m/Y', $value)->format('Y-m-d'),
             get: fn (string $value) => DateTime::createFromFormat('Y-m-d', $value)->format('d/m/Y'),
+            set: fn (string $value) => DateTime::createFromFormat('d/m/Y', $value)->format('Y-m-d')
         );
     }
 }

@@ -3,10 +3,11 @@
 namespace App\Http\Service;
 
 use App\Models\Customer;
+use Illuminate\Pagination\Paginator;
 
 class CustomerService
 {
-    private $customerModel;
+    private Customer $customerModel;
 
     public function __construct(Customer $customer)
     {
@@ -18,12 +19,7 @@ class CustomerService
         return $this->customerModel->create($customerData);
     }
 
-    public function getById(int $id) : Customer
-    {
-        return $this->customerModel->findOrFail($id);
-    }
-
-    public function list() : Customer
+    public function list() : Paginator
     {
         return $this->customerModel->simplePaginate(15);
     }
