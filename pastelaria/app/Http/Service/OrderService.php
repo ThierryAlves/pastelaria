@@ -34,7 +34,7 @@ class OrderService
 
         $order = $this->getById($orderCreated->id);
 
-        Mail::to($order->customer->email)->send(new OrderCreated($order));
+//        Mail::to($order->customer->email)->send(new OrderCreated($order));
 
         return $order;
     }
@@ -75,7 +75,7 @@ class OrderService
 
         $order = $this->getById($order->id);
 
-        Mail::to($order->customer->email)->send(new OrderCreated($order));
+//        Mail::to($order->customer->email)->send(new OrderCreated($order));
 
         return $order;
     }
