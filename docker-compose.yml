@@ -7,23 +7,21 @@ services:
   mariadb:
     image: docker.io/bitnami/mariadb:11.1
     environment:
+      # ALLOW_EMPTY_PASSWORD is recommended only for development.
       - ALLOW_EMPTY_PASSWORD=yes
-      - MARIADB_USER=bn_pastelaria
-      - MARIADB_DATABASE=bitnami_pastelaria
+      - MARIADB_USER=bn_myapp
+      - MARIADB_DATABASE=bitnami_myapp
     ports:
       - '3306:3306'
-  pastelaria:
+  myapp:
     image: docker.io/bitnami/laravel:10
-    build:
-      dockerfile: php.dockerfile
     ports:
       - '8000:8000'
     environment:
       - DB_HOST=mariadb
       - DB_PORT=3306
-      - DB_USERNAME=bn_pastelaria
-      - DB_DATABASE=bitnami_pastelaria
-    restart: unless-stopped
+      - DB_USERNAME=bn_myapp
+      - DB_DATABASE=bitnami_myapp
     volumes:
       - './pastelaria:/app'
     depends_on:
