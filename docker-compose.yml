@@ -11,8 +11,6 @@ services:
       - ALLOW_EMPTY_PASSWORD=yes
       - MARIADB_USER=bn_myapp
       - MARIADB_DATABASE=bitnami_myapp
-    ports:
-      - '3306:3306'
   myapp:
     image: docker.io/bitnami/laravel:10
     ports:
@@ -22,6 +20,14 @@ services:
       - DB_PORT=3306
       - DB_USERNAME=bn_myapp
       - DB_DATABASE=bitnami_myapp
+    # A imagem laravel do docker provida pela bitnami está com um bug ao subir um projeto já existente, mas sem a vendor (https://github.com/bitnami/containers/issues/30800)
+    # Por isso, esses comandos são necessários, porque do contrário seria necessário versionar a vendor
+    command:
+      - /bin/bash
+      - -c
+      - |
+        composer install
+        php artisan serve --host 0.0.0.0 --port 8000
     volumes:
       - './pastelaria:/app'
     depends_on:

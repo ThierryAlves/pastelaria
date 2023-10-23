@@ -1,1 +1,0 @@
-RUN composer install
