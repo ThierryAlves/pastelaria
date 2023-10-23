@@ -9,6 +9,3 @@ pastelaria/Homestead.yaml
 pastelaria/Homestead.json
 pastelaria/.vagrant
 pastelaria/.phpunit.result.cache
-
-pastelaria/public/produtos/*
-pastelaria/public/storage

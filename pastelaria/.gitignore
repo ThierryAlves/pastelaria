@@ -2,8 +2,6 @@ pastelaria/.phpunit.cache
 pastelaria/node_modules
 pastelaria/public/build
 pastelaria/public/hot
-pastelaria/public/storage
-pastelaria/storage/*.key
 pastelaria/vendor
 pastelaria/.env
 pastelaria/.env.backup
