@@ -9,9 +9,10 @@ class ProductImageService
 {
     public function storeProductImage(UploadedFile $file) : void
     {
-        $file->storeAs(
-            'produtos',
-            $file->getFilename() . ".{$file->extension()}"
+        $fileName = $file->getFilename() . ".{$file->extension()}";
+        Storage::disk('produtos')->put(
+            $fileName,
+            $file->getContent()
         );
     }
 
