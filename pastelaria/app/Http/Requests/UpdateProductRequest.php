@@ -21,9 +21,17 @@ class UpdateProductRequest extends ProductRequest
     public function rules(): array
     {
         return array_merge_recursive(parent::rules(), [
+            'placeholder' => ['required_without_all:nome,preco,foto_produto'],
             'nome' => ['sometimes'],
             'preco' => ['sometimes'],
             'foto_produto' => ['sometimes']
         ]);
+    }
+
+    public function messages()
+    {
+        return [
+            'required_without_all' => 'nome, preco or foto_produto must be present.'
+        ];
     }
 }
