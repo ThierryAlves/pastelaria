@@ -38,13 +38,22 @@ docker-compose exec myapp php artisan db:seed
 docker-compose exec myapp php artisan storage:link
 ```
 
+## Testes
+
+Esse projeto possui testes unitários e de feature/integração.  
+Para executar os testes, pode ser utilizado o comando abaixo com o container rodando
+
+```
+docker-compose exec myapp php artisan test
+```
+
 ## Postman collection
 Na pasta conf também foi adicionado um postmanCollection, com as rotas já preparadas para serem utilizadas
 
 ## Falha do framework
-O laravel possui um bug já antigo relacionado a requests PATCH que utilizam form-data.
-Nesses casos, ele não identifica as informações passadas. 
-Isso normalmente não é um problema, porém nessa API, foi necessário enviar dados como form-data no PATCH de produto, devido a imagem.
+O laravel possui um bug já antigo relacionado a requests PATCH que utilizam form-data.  
+Nesses casos, ele não identifica as informações passadas.   
+Isso normalmente não é um problema, porém nessa API, foi necessário enviar dados como form-data no PATCH de produto, devido a imagem.  
 Nesse caso, o _workaround_ recomendado é realizar a requisição como POST, mas adicionar um novo parâmetro chamado _method e passar o valor dele como PATCH. 
 
 https://laravel.io/forum/02-13-2014-i-can-not-get-inputs-from-a-putpatch-request
