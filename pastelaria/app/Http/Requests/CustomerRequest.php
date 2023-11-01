@@ -18,7 +18,7 @@ class CustomerRequest extends FormRequest
             'email' => ['email'],
             'telefone' => ['min:8', 'max:11'],
             'data_nascimento' => ['date_format:d/m/Y'],
-            'endereco' => ['min:10', 'max:100'],
+            'endereco' => ['min:5', 'max:100'],
             'complemento' => ['min:4', 'max:80'],
             'bairro' => ['min:10', 'max:100'],
             'cep' => ['min:8', 'max:8']

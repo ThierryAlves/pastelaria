@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('telefone', 11);
             $table->date('data_nascimento');
             $table->string('endereco', 100);
-            $table->string('complemento', 80);
+            $table->string('complemento', 80)->nullable();
             $table->string('bairro', 100);
             $table->string('cep', 8);
             $table->timestamps();

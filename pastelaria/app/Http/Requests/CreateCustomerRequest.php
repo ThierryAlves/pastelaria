@@ -22,7 +22,6 @@ class CreateCustomerRequest extends CustomerRequest
             'telefone' => ['required'],
             'data_nascimento' => ['required'],
             'endereco' => ['required'],
-            'complemento' => ['required'],
             'bairro' => ['required'],
             'cep' => ['required']
         ]);
