@@ -29,7 +29,10 @@ class CustomerTest extends TestCase
                 'cep',
                 'updated_at',
                 'created_at'
-            ]);
+            ])->assertJson(fn (AssertableJson $json) =>
+                $json->where('id', 1)
+                    ->etc()
+            );;
 
         $response->assertStatus(200);
     }
@@ -127,6 +130,129 @@ class CustomerTest extends TestCase
         $response
             ->assertJson(fn (AssertableJson $json) =>
             $json->where('message', 'The nome field is required.')
+                ->etc()
+            );
+
+        $response->assertStatus(422);
+    }
+
+    public function test_customer_create_name_min_size_8_error(): void
+    {
+
+        $newCustomer = [
+            'nome' => Str::random(3),
+            'email' => fake()->unique()->safeEmail(),
+            'telefone' => fake()->cellphone(false),
+            'data_nascimento' => fake()->date('d/m/Y'),
+            'endereco' => Str::random(10),
+            'cep' => fake()->postcode,
+            'bairro' => Str::random(10)
+        ];
+
+        $response = $this->post('/api/customer/create', $newCustomer);
+
+        $response
+            ->assertJson(fn (AssertableJson $json) =>
+            $json->where('message', 'The nome field must be at least 8 characters.')
+                ->etc()
+            );
+
+        $response->assertStatus(422);
+    }
+
+    public function test_customer_create_name_max_size_80_error(): void
+    {
+
+        $newCustomer = [
+            'nome' => Str::random(85),
+            'email' => fake()->unique()->safeEmail(),
+            'telefone' => fake()->cellphone(false),
+            'data_nascimento' => fake()->date('d/m/Y'),
+            'endereco' => Str::random(10),
+            'cep' => fake()->postcode,
+            'bairro' => Str::random(10)
+        ];
+
+        $response = $this->post('/api/customer/create', $newCustomer);
+
+        $response
+            ->assertJson(fn (AssertableJson $json) =>
+            $json->where('message', 'The nome field must not be greater than 80 characters.')
+                ->etc()
+            );
+
+        $response->assertStatus(422);
+    }
+
+    public function test_customer_create_email_unique_error(): void
+    {
+
+        $email = fake()->unique()->safeEmail();
+
+        $newCustomer = [
+            'nome' => Str::random(30),
+            'email' => $email,
+            'telefone' => fake()->cellphone(false),
+            'data_nascimento' => fake()->date('d/m/Y'),
+            'endereco' => Str::random(10),
+            'cep' => fake()->postcode,
+            'bairro' => Str::random(10)
+        ];
+
+        Customer::factory()->create($newCustomer);
+
+        $response = $this->post('/api/customer/create', $newCustomer);
+
+        $response
+            ->assertJson(fn (AssertableJson $json) =>
+            $json->where('message', 'The email has already been taken.')
+                ->etc()
+            );
+
+        $response->assertStatus(422);
+    }
+
+    public function test_customer_create_email_invalid_error(): void
+    {
+        $newCustomer = [
+            'nome' => Str::random(30),
+            'email' => Str::random(15),
+            'telefone' => fake()->cellphone(false),
+            'data_nascimento' => fake()->date('d/m/Y'),
+            'endereco' => Str::random(10),
+            'cep' => fake()->postcode,
+            'bairro' => Str::random(10)
+        ];
+
+
+        $response = $this->post('/api/customer/create', $newCustomer);
+
+        $response
+            ->assertJson(fn (AssertableJson $json) =>
+            $json->where('message', 'The email field must be a valid email address.')
+                ->etc()
+            );
+
+        $response->assertStatus(422);
+    }
+
+    public function test_customer_create_data_nascimento_invalid_format_error(): void
+    {
+        $newCustomer = [
+            'nome' => Str::random(30),
+            'email' => fake()->safeEmail,
+            'telefone' => fake()->cellphone(false),
+            'data_nascimento' => fake()->date(),
+            'endereco' => Str::random(10),
+            'cep' => fake()->postcode,
+            'bairro' => Str::random(10)
+        ];
+
+        $response = $this->post('/api/customer/create', $newCustomer);
+
+        $response
+            ->assertJson(fn (AssertableJson $json) =>
+            $json->where('message', 'The data nascimento field must match the format d/m/Y.')
                 ->etc()
             );
 
