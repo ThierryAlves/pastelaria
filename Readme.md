@@ -20,6 +20,11 @@ O .env normalmente não seria versionado, mas é necessário para o projeto
 mv -v conf/.env ./pastelaria/
 ```
 
+### Cria mysqlite para testes
+```
+docker-compose exec myapp touch database/database.sqlite
+```
+
 ### Cria as tabelas do banco de dados
 ```
 docker-compose exec myapp php artisan migrate
