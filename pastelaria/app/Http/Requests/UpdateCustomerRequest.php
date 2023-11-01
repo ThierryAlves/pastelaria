@@ -18,6 +18,7 @@ class UpdateCustomerRequest extends CustomerRequest
     public function rules(): array
     {
         return array_merge_recursive(parent::rules(), [
+            'placeholder' => ['required_without_all:nome,email,telefone,data_nascimento,endereco,complemento,bairro,cep'],
             'nome' => ['sometimes'],
             'email' => ['sometimes', "unique:App\Models\Customer,email"],
             'telefone' => ['sometimes'],
@@ -27,5 +28,12 @@ class UpdateCustomerRequest extends CustomerRequest
             'bairro' => ['sometimes'],
             'cep' => ['sometimes']
         ]);
+    }
+
+    public function messages()
+    {
+        return [
+            'required_without_all' => 'nome,email,telefone,data_nascimento,endereco,complemento,bairro or cep must be present.'
+        ];
     }
 }

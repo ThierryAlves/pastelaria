@@ -243,6 +243,24 @@ class CustomerTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function test_customer_patch_no_data_error(): void
+    {
+        $this->seed(CustomerSeeder::class);
+
+        $newCustomer = [
+
+        ];
+
+        $response = $this->patch('/api/customer/update/1', $newCustomer);
+
+        $response
+            ->assertJson(fn (AssertableJson $json) =>
+            $json->where('message', 'nome,email,telefone,data_nascimento,endereco,complemento,bairro or cep must be present.')
+                ->etc()
+            );
+        $response->assertStatus(422);
+    }
+
     public function test_customer_patch_name_lenght_error(): void
     {
         $this->seed(CustomerSeeder::class);

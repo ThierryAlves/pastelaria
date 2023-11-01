@@ -271,6 +271,47 @@ class OrderTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function test_order_put_empty_error(): void
+    {
+        $this->seed(OrderSeeder::class);
+
+        $newProducts = [
+
+        ];
+
+        $response = $this->put('/api/order/changeProducts/1', $newProducts);
+
+        $response
+            ->assertJson(fn (AssertableJson $json) =>
+            $json->where('message', 'The produtos field is required. (and 1 more error)')
+                ->where('errors.produtos.0', 'The produtos field is required.')
+                ->where('errors.cliente_id.0', 'The cliente id field is required.')
+                ->etc()
+            );
+
+        $response->assertStatus(422);
+    }
+
+    public function test_order_put_products_empty_error(): void
+    {
+        $this->seed(OrderSeeder::class);
+
+        $newProducts = [
+            'cliente_id' => 1,
+            'produtos' => []
+        ];
+
+        $response = $this->put('/api/order/changeProducts/1', $newProducts);
+
+        $response
+            ->assertJson(fn (AssertableJson $json) =>
+            $json->where('message', 'The produtos field is required.')
+                ->etc()
+            );
+
+        $response->assertStatus(422);
+    }
+
     public function test_order_put_products_dont_exists_error(): void
     {
         $this->seed(OrderSeeder::class);
@@ -290,4 +331,6 @@ class OrderTest extends TestCase
 
         $response->assertStatus(422);
     }
+
+
 }
