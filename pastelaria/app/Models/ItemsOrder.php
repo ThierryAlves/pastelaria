@@ -20,4 +20,9 @@ class ItemsOrder extends Model
     {
         return $this->belongsTo(Product::class, 'produto_id')->withTrashed();
     }
+
+    public function order() : BelongsTo
+    {
+        return $this->belongsTo(Order::class, 'pedido_id');
+    }
 }

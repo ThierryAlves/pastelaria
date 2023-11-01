@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use Database\Seeders\ProdutosSeeder;
+use Database\Seeders\ProductSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -15,7 +15,7 @@ class ProductTest extends TestCase
 
     public function test_product_get_success(): void
     {
-        $this->seed(ProdutosSeeder::class);
+        $this->seed(ProductSeeder::class);
         $response = $this->get('/api/product/get/1');
         $response
             ->assertJson(fn (AssertableJson $json) =>
@@ -93,7 +93,7 @@ class ProductTest extends TestCase
 
     public function test_product_delete_success(): void
     {
-        $this->seed(ProdutosSeeder::class);
+        $this->seed(ProductSeeder::class);
 
         $response = $this->delete('/api/product/delete/1');
 
@@ -125,7 +125,7 @@ class ProductTest extends TestCase
      */
     public function test_products_list_success(): void
     {
-        $this->seed(ProdutosSeeder::class);
+        $this->seed(ProductSeeder::class);
 
         $response = $this->get('/api/product/list/');
 
@@ -160,7 +160,7 @@ class ProductTest extends TestCase
      */
     public function test_products_list_empty(): void
     {
-        $this->seed(ProdutosSeeder::class);
+        $this->seed(ProductSeeder::class);
 
         $response = $this->get('/api/product/list/?page=2');
 
@@ -178,7 +178,7 @@ class ProductTest extends TestCase
 
     public function test_product_patch_name_success(): void
     {
-        $this->seed(ProdutosSeeder::class);
+        $this->seed(ProductSeeder::class);
 
         $newName = 'Nome Atualizado';
         $newProduct = [
@@ -199,7 +199,7 @@ class ProductTest extends TestCase
 
     public function test_product_patch_name_lenght_error(): void
     {
-        $this->seed(ProdutosSeeder::class);
+        $this->seed(ProductSeeder::class);
 
         $newProduct = [
             'nome' => 'Nom'

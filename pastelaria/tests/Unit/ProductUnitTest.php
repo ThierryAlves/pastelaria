@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use App\Http\Service\ProductService;
-use Database\Seeders\ProdutosSeeder;
+use Database\Seeders\ProductSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Pagination\Paginator;
@@ -42,7 +42,7 @@ class ProductUnitTest extends TestCase
      */
     public function test_products_service_list_has_five_items_listed(): void
     {
-        $this->seed(ProdutosSeeder::class);
+        $this->seed(ProductSeeder::class);
         $productService = resolve(ProductService::class);
         $response = $productService->list();
         $response = $response->toArray();

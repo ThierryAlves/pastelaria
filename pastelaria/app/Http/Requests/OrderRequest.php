@@ -19,4 +19,11 @@ class OrderRequest extends FormRequest
             'produtos.*' => ['exists:App\Models\Product,id']
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'produtos.*.exists' => 'The product :input don\'t exists.'
+        ];
+    }
 }

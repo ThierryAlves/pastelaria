@@ -53,7 +53,8 @@ class OrderService
         return $this->orderModel
             ->with('items')
             ->with('items.product')
-            ->simplePaginate(1);
+            ->with('customer')
+            ->simplePaginate(10);
     }
 
     public function delete(int $id) : void
